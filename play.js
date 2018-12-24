@@ -4,6 +4,7 @@
 		var clock = null;
 		var state = true;
 		var speed = 2;
+ 
 
 		function getStyle(el,attr) {
 			return el.currentStyle ? el.currentStyle[attr] : getComputedStyle(el,null)[attr];
