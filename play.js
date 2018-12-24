@@ -1,5 +1,6 @@
 		var main = document.getElementById('main');
 		var main1 = document.getElementById('main1');
+		var music = document.getElementById("music");
 		var clock = null;
 		var state = true;
 		var speed = 2;
@@ -75,9 +76,10 @@
 					var score1 = document.getElementById('sc1');
 					var sc = parseInt(score.innerHTML) + 1;
 					score.innerHTML = score1.innerHTML = sc;
+					music.play();
 
 					if(sc%10 == 0){
-						speed += 1;
+						speed += 0.5;
 					}
 		// console.log(ev.target.parentNode.pass)
 				}
@@ -90,6 +92,7 @@
 			state = false;
 			clearInterval(clock);
 			main.style.display = 'block';
+			music.pause();
 
 			// var r = confirm("游戏结束，是否重新开始，点击取消返回首页");
 			// if(r == true){
