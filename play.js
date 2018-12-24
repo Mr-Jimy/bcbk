@@ -1,4 +1,4 @@
-var main = document.getElementById('main');
+		var main = document.getElementById('main');
 		var main1 = document.getElementById('main1');
 		var clock = null;
 		var state = true;
@@ -104,9 +104,4 @@ var main = document.getElementById('main');
 		res.onclick = function() {
 			window.location.reload();
 		}
-		// var ret = document.getElementById('return')
-		// ret.onclick = function() {
-		// 	window.location.href = "home.html"
-		// }
-
 		init();
