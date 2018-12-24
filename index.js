@@ -104,9 +104,9 @@ var main = document.getElementById('main');
 		res.onclick = function() {
 			window.location.reload();
 		}
-		var ret = document.getElementById('return')
-		ret.onclick = function() {
-			window.location.href = "home.html"
-		}
+		// var ret = document.getElementById('return')
+		// ret.onclick = function() {
+		// 	window.location.href = "home.html"
+		// }
 
 		init();
