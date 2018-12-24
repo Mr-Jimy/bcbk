@@ -106,7 +106,7 @@ var main = document.getElementById('main');
 		}
 		var ret = document.getElementById('return')
 		ret.onclick = function() {
-			window.location.href = "a.html"
+			window.location.href = "home.html"
 		}
 
 		init();
