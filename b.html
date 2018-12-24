@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+	<!-- <script type="text/javascript" src="b.js"></script> -->
+</head>
+	<style type="text/css">
+		html,body{
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			width:100%;
+			position: relative;
+			overflow-y: hidden;
+		}
+		#main1{
+			 width: 100%;
+   			 height: 100%; 
+   			 position: relative;
+   			 top: -100%;
+   			 /*overflow-y: hidden;*/
+		}
+		.row{
+			width: 100%;
+			height: 25%;
+			overflow: hidden;
+		}
+		.row div{
+			-webkit-box-sizing:border-box;
+			-moz-box-sizing:border-box;
+			box-sizing: border-box;
+			width: 25%;
+			height: 100%;
+			border: 1px solid black;
+			float: left;
+		}
+		.black{
+			background-color: black;
+		}
+		#sc{
+			font-size: 30px;
+		    color: red;
+		    position: fixed;
+		    width: 100%;
+		    text-align: center;
+		    z-index: 100;
+		    margin: 0;
+		}
+		#main{
+			width: 100%;
+		    height: 100%;
+		    position: fixed;
+		    background-color: #000000a8;
+		    top: 0;
+		    z-index: 110;
+		    display: none;
+		}
+		#main>p{
+		    width: 100%;
+		    text-align: center;
+		    position: absolute;
+		    -webkit-text-stroke: 1px white;
+		    color: black;
+		    font-size: 4em;
+		    top: 15%;
+		    font-family: "华文隶书";
+		}
+		#main>div{
+		    width: 100%;
+		    text-align: center;
+		    position: absolute;
+		    -webkit-text-stroke: 2px white;
+		    color: white;
+		    font-size: 3.8em;
+		    top: 40%;
+		    font-family: "华文隶书";
+		}
+		#restart{
+			background-color: #10da10;;
+			color: white;
+			position: absolute;
+		    width: 80%;
+		    height: 11%;
+		    font-size: 2em;
+		    bottom: 30%;
+		    left: 10%;
+		    border-radius: 30px;
+		    outline: none;
+		    border: 0;
+		    font-family: "华文隶书";
+		}
+		#return{
+			position: absolute;
+		    width: 80%;
+		    height: 11%;
+		    font-size: 2em;
+		    bottom: 15%;
+		    left: 10%;
+		    border-radius: 30px;
+		    outline: none;
+		    border: 0;
+		    font-family: "华文隶书";
+		}
+
+	</style>
+<body>
+	<audio src="HR.mp3" autoplay="autoplay" controls="controls"></audio>
+	<h1 id="sc">0</h1>
+		<div id="main1">
+		</div>
+		<div id=main>
+			<p>本次得分</p>
+			<div id="sc1">0</div>
+			<button id="restart">重新开始</button>
+			<button id="return">返回首页</button>
+		</div>
+</body>
+	<script type="text/javascript">
+
+		// window.onload = function() {
+		// 	var i = 5;
+		// 	var timer = setInterval(function() {
+		// 		if(i == 0) {
+		// 			clearInterval(timer);
+		// 		}else{
+		// 			document.body.innerHTML = --i;
+		// 		}
+		// 	},1000);
+		// }
+
+		var main = document.getElementById('main');
+		var main1 = document.getElementById('main1');
+		var clock = null;
+		var state = true;
+		var speed = 2;
+
+		function getStyle(el,attr) {
+			return el.currentStyle ? el.currentStyle[attr] : getComputedStyle(el,null)[attr];
+		}
+
+		
+		function cDiv(className) {
+			var div = document.createElement('div');
+			if(className) {
+				div.className = className
+			}
+			return div;
+		}
+
+		function cRow() {
+			var ind = Math.floor(Math.random()*4);
+
+			var row = cDiv('row')
+
+			for(var i = 0; i<4; i++) {
+				if(i == ind) {
+					row.appendChild(cDiv('black'));
+				}else{
+					row.appendChild(cDiv());
+				}
+			}
+
+			if(main1.firstChild) {
+				main1.insertBefore(row , main1.firstChild)
+			}else{
+				main1.appendChild(row);
+			}	
+		}
+		
+
+		function move() {
+			var top = getStyle(main1 , 'top');
+			top = parseInt(top) + speed ;
+
+			main1.style.top = top + 'px'
+			if(top > 0) {
+				cRow();
+				main1.style.top = '-25%';
+
+				if(main1.children.length > 4 ) {
+				main1.removeChild(main1.lastChild);
+			}
+
+				if(main1.lastChild.pass == undefined){
+					fail();
+				}
+			}
+		}
+
+		function init() {
+			for(var i = 0; i<4 ;i++){
+				cRow();
+			}
+
+			main1.onclick = function(ev) {
+				ev.target = ev.target || ev.srcElement;
+				if(state == false){
+					fail();
+				}else if(ev.target.className == '') {
+					fail();
+				} else {
+					ev.target.className = '';
+					ev.target.parentNode.pass = true;
+					var score = document.getElementById('sc');
+					var score1 = document.getElementById('sc1');
+					var sc = parseInt(score.innerHTML) + 1;
+					score.innerHTML = score1.innerHTML = sc;
+
+					if(sc%10 == 0){
+						speed += 1;
+					}
+		// console.log(ev.target.parentNode.pass)
+				}
+			}
+
+			clock = window.setInterval('move();',10);
+		}
+
+		function fail() {
+			state = false;
+			clearInterval(clock);
+			main.style.display = 'block';
+
+			// var r = confirm("游戏结束，是否重新开始，点击取消返回首页");
+			// if(r == true){
+			// 	// window.history.go(0);
+			// 	window.location.reload();
+			// }else{
+			// 	window.location.href = "a.html"
+			// }
+		}
+
+		var res = document.getElementById('restart')
+		res.onclick = function() {
+			window.location.reload();
+		}
+		var ret = document.getElementById('return')
+		ret.onclick = function() {
+			window.location.href = "a.html"
+		}
+
+		init();
+		
+	</script>
+</html>
